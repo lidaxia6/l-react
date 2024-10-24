@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- babel -->
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+  <!-- React 需要使用到 React.createElement() 方法 -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+<script>
+  // 将 jsx 字符串转换为 jsx 元素
+  function jsxStrToJsxElement(jsxStr) {
+    // 使用 Babel 转译 JSX
+    const transformedCode = Babel.transform(jsxStr, { presets: ['react'] }).code;
+    return eval(transformedCode)
+  }
+</script>
+
+
+<script type="module">
+  import { createFiber } from '/core/createFiber.js';
+
+  const jsxElement = jsxStrToJsxElement(`(
+    <div className="border">
+      <h1>react</h1>
+      <a href="https://www.baidu.com/">mini react</a>
+      <div class="a">
+        <div class="aa">aa</div>
+      </div>
+    </div>
+  )`)
+
+  const rootObjGenFromContainer = {
+    containerInfo: document.getElementById('root'),
+  };
+
+  const fiber = createFiber(jsxElement, rootObjGenFromContainer)
+  console.log('fiber ==>', fiber)
+</script>
+
+</html>
